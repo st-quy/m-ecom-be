@@ -3,6 +3,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import * as path from 'path'; // Import module path
+import { CartsModule } from './modules/carts/carts.module';
+import { CategoryModule } from './modules/category/category.module';
+import { CheckoutModule } from './modules/checkout/checkout.module';
+import { PaymentModule } from './modules/payment/payment.module';
+import { ProductsModule } from './modules/products/products.module';
+import { RolesModule } from './modules/roles/roles.module';
+import { UsersModule } from './modules/users/users.module';
 
 
 @Module({
@@ -26,6 +33,14 @@ import * as path from 'path'; // Import module path
       inject: [ConfigService],
      
     }),
+    CartsModule,
+    CategoryModule,
+    CheckoutModule,
+    PaymentModule,
+    ProductsModule,
+    RolesModule,
+    UsersModule
+  
 
   ],
   controllers: [],
