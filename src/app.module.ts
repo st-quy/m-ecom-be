@@ -19,12 +19,9 @@ import * as path from 'path'; // Import module path
         database: configService.get('PG_DB'),
 
         entities:  [path.join(__dirname, '**', '*.entity{.ts,.js}')],
-
-
         synchronize: true,
       }),
-      inject: [ConfigService],
-     
+      inject: [ConfigService], 
     }),
 
   ],
