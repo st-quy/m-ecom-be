@@ -26,12 +26,9 @@ import { UsersModule } from './modules/users/users.module';
         database: configService.get('PG_DB'),
 
         entities:  [path.join(__dirname, '**', '*.entity{.ts,.js}')],
-
-
         synchronize: true,
       }),
-      inject: [ConfigService],
-     
+      inject: [ConfigService], 
     }),
     CartsModule,
     CategoryModule,
@@ -41,7 +38,6 @@ import { UsersModule } from './modules/users/users.module';
     RolesModule,
     UsersModule
   
-
   ],
   controllers: [],
   providers: [],

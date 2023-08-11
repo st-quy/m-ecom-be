@@ -26,15 +26,10 @@ export class Products {
     status: string;
 
     @Column()
-    stock: string;
-
-
-    @Column()
     brand: string;
 
-
-    @Column({ default: null})
-    delete_At: string;
+    @Column({ type: 'timestamp', default: null }) // Đảm bảo column type là timestamp hoặc datetime
+    delete_At: Date;
 
     @Column()
     quantity_sold: number;
@@ -43,9 +38,7 @@ export class Products {
     quantity_inventory: number;
 
     @Column()
-    sku: string;
-
-
+    sku: number;
 
     @ManyToMany(() => Carts, cart => cart.product)
     cart: Carts[]
