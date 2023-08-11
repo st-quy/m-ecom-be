@@ -28,7 +28,6 @@ export class Products {
     @Column()
     brand: string;
 
-
     @Column({ type: 'timestamp', default: null }) // Đảm bảo column type là timestamp hoặc datetime
     delete_At: Date;
 

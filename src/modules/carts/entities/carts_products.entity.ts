@@ -23,5 +23,7 @@ export class CartsProducts {
   @ManyToOne(() => Products, product => product.cartsProducts)
   @JoinColumn({ name: "productId", referencedColumnName: 'id' })
   product: Products;
+
+  
 }
 

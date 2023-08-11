@@ -1,13 +1,21 @@
-import { Controller, Post, Body, Delete, Patch, Param, Get, ParseIntPipe, } from '@nestjs/common';
+
+import { Controller, Post, Body, Delete, Patch, Param, Get, ParseIntPipe,Query  } from '@nestjs/common';
 import { CreateProductDTO } from './dto/CreateProduct.dto';
 import { Products } from './entities/products.entity';
 import { ProductsService } from './products.service';
+import { SortBy } from 'src/commons/constants/enum';
+import { getProductsDto } from './dto/getProductsDto.dto';
 import { UpdateProductDTO } from './dto/UpdateProduct.dto';
 import { ProductDTO } from './dto/Product.dto';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productService: ProductsService) {}
+  
+   @Get('/search')
+    async searchProducts(@Query() searchDto: getProductsDto): Promise<Products[]> {
+      return this.productsService.searchProducts(searchDto);
+    }
 
   // Lấy sản phẩm theo ID
   @Get(':id')
@@ -48,4 +56,5 @@ export class ProductsController {
     return this.productService.deleteProduct(id);
   }
 }
+
 
