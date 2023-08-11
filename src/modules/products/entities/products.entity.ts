@@ -33,7 +33,7 @@ export class Products {
     brand: string;
 
 
-    @Column()
+    @Column({ default: null})
     delete_At: string;
 
     @Column()
