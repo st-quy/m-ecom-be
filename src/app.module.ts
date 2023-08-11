@@ -38,7 +38,6 @@ import { UsersModule } from './modules/users/users.module';
     RolesModule,
     UsersModule
   
-
   ],
   controllers: [],
   providers: [],
