@@ -26,6 +26,9 @@ export class Products {
     status: string;
 
     @Column()
+    product_availability: string;
+
+    @Column()
     brand: string;
 
     @Column({ type: 'timestamp', default: null }) // Đảm bảo column type là timestamp hoặc datetime

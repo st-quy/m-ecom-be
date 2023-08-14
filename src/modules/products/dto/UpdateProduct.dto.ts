@@ -7,6 +7,7 @@ export class UpdateProductDTO {
     price: number;
     description: string;
     image: string;
+    product_availability: string;
     sku: number;
     quantity_sold: number;
     quantity_inventory: number; 

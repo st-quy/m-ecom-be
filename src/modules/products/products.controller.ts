@@ -12,35 +12,21 @@ import { ProductDTO } from './dto/Product.dto';
 export class ProductsController {
   constructor(private readonly productService: ProductsService) {}
   
-   @Get('/search')
+   @Get()
     async searchProducts(@Query() searchDto: getProductsDto): Promise<Products[]> {
       return this.productService.searchProducts(searchDto);
     }
 
   // Lấy sản phẩm theo ID
   @Get(':id')
-  async findById(@Param('id', ParseIntPipe) id: number): Promise<ProductDTO> {
-      const product = await this.productService.findById(id);
-      const productDTO: ProductDTO = {
-        id: product.id,
-        product_name: product.product_name,
-        brand: product.brand,
-        category: product.category.category_name, 
-        price: product.price,
-        description: product.description,
-        image: product.image,
-        sku: product.sku,
-        quantity_inventory: product.quantity_inventory,
-        status: product.status,
-        deleteAt: product.delete_At,
-        quantity_sold: product.quantity_sold,
-      };
-      return productDTO;
+  async getProductById(@Param('id', ParseIntPipe) id: number): Promise<ProductDTO> {
+    const product = await this.productService.findById(id);
+    return product;
   }
 
   // Thêm sản Phẩm
   @Post()
-  async create(@Body() createProductDTO: CreateProductDTO): Promise<Products> {
+  async create(@Body() createProductDTO: CreateProductDTO): Promise<ProductDTO> {
     return await this.productService.createProduct(createProductDTO);
   }
 

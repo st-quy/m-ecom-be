@@ -5,6 +5,9 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typ
 
 @Entity()
 export class Category {
+  map(arg0: (category: any) => { id: any; category_name: any; }) {
+    throw new Error('Method not implemented.');
+  }
   @PrimaryGeneratedColumn()
   id: number;
 

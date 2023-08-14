@@ -1,5 +1,6 @@
 import { IsEnum,IsOptional } from 'class-validator';
 import { SortBy } from 'src/commons/constants/enum';
+import { Category } from 'src/modules/category/entities';
 
 export class getProductsDto {
   productName: string;
@@ -13,6 +14,5 @@ export class getProductsDto {
   sortByQuantitySold;
 
   categoryId: number;
-
-
+  product_availability: string;
 }
