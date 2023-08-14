@@ -1,3 +1,4 @@
+import { IsNotEmpty } from "class-validator";
 import { Category } from "src/modules/category/entities";
 
 export class ProductDTO {

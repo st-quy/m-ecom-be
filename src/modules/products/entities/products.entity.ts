@@ -1,4 +1,5 @@
 // products.entity.ts
+import { isNotEmpty } from 'class-validator';
 import { Carts } from 'src/modules/carts/entities/carts.entity';
 import { CartsProducts } from 'src/modules/carts/entities/carts_products.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
@@ -10,6 +11,7 @@ export class Products {
     @PrimaryGeneratedColumn()
     id: number;
 
+   
     @Column()
     product_name: string;
 
