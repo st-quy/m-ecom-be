@@ -3,6 +3,7 @@ import { Category } from './entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Products } from '../products/entities';
+import { AddCategoryDTO } from './dto/addCategory.dto';
 
 @Injectable()
 export class CategoryService {
@@ -23,6 +24,11 @@ export class CategoryService {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
     return category;
+  }
+
+  async addCategory(addCategoryDTO: AddCategoryDTO): Promise<Category> {
+    const category = this.categoryRepository.create(addCategoryDTO);
+    return await this.categoryRepository.save(category);
   }
 
   async update(id: number, category: Category): Promise<Category> {
