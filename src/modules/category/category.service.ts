@@ -50,15 +50,14 @@ export class CategoryService {
       .leftJoinAndSelect('category.products', 'product')
       .where('category.id = :id', { id })
       .getOne();
-  
-    console.log(category, 'aaaa');
-  
+      
+
     if (!category) {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
 
-    const hasActiveProducts = category.products.some(product => product.status === 'active');
-
+    const hasActiveProducts = category.products.some(product => product.status === 'active' && product.product_availability ==="selling");
+    
     if (hasActiveProducts) {
       throw new BadRequestException('Cannot delete category with active products');
     }
