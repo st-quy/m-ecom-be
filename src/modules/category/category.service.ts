@@ -51,30 +51,31 @@ export class CategoryService {
       .where('category.id = :id', { id })
       .getOne();
       
-
+    
     if (!category) {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
 
-    const hasActiveProducts = category.products.some(product => product.status === 'active' && product.product_availability ==="selling");
-    
+    const hasActiveProducts = category.products.some( product => product.status === 'active' && product.product_availability === 'selling');
+    console.log(hasActiveProducts,"hasActiveProducts ")
     if (hasActiveProducts) {
       throw new BadRequestException('Cannot delete category with active products');
-    }
+    }   
+
+      category.delete_at = new Date();
+      await this.categoryRepository.save(category);
   
-    category.delete_at = new Date();
-    await this.categoryRepository.save(category);
+      
+      const productIds = category.products.map(product => product.id);
   
-    // Soft delete related products
-    const productIds = category.products.map(product => product.id);
-  
-    await this.productRepository
-      .createQueryBuilder()
-      .update(Products)
-      .set({ delete_At: new Date() }) // Soft delete marker
-      .where('id IN (:...productIds)', { productIds }) // Use IN operator with product IDs
-      .execute();
+      await this.productRepository
+        .createQueryBuilder()
+        .update(Products)
+        .set({ category: null }) // Soft delete marker
+        .where('id IN (:...productIds)', { productIds }) // Use IN operator with product IDs
+        .execute();
+
   }
- 
+
 }
 
