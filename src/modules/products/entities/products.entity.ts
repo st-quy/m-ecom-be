@@ -26,8 +26,10 @@ export class Products {
     status: string;
 
     @Column()
-    brand: string;
+    product_availability: string;
 
+    @Column()
+    brand: string;
 
     @Column({ type: 'timestamp', default: null }) // Đảm bảo column type là timestamp hoặc datetime
     delete_At: Date;
@@ -47,8 +49,8 @@ export class Products {
     @OneToMany(() => CartsProducts, cartsProduct => cartsProduct.product)
     cartsProducts: CartsProducts[];
 
-    @ManyToOne(() => Category, category => category.products)
-    category: Category;
+    @ManyToOne(() => Category, category => category.products, { nullable: true })
+    category: Category | null;
 
 }
 
