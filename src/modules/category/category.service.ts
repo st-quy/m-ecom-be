@@ -1,7 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Category } from './entities';
 import { InjectRepository } from '@nestjs/typeorm';
+
 import { IsNull, Repository } from 'typeorm';
+
+import { Repository } from 'typeorm';
+
 import { Products } from '../products/entities';
 import { AddCategoryDTO } from './dto/addCategory.dto';
 
@@ -13,6 +17,7 @@ export class CategoryService {
     @InjectRepository(Category)
     private readonly productRepository: Repository<Products>,
   ) { }
+
   async findAll(): Promise<Category[]> {
     return this.categoryRepository.find({
       where: {
@@ -33,6 +38,7 @@ export class CategoryService {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
     
+
     return category;
   }
 
