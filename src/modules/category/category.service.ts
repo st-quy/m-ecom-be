@@ -71,6 +71,10 @@ export class CategoryService {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
 
+    if (category.products.length === 0) {
+      category.delete_at = new Date();
+      await this.categoryRepository.save(category);
+    } else {
     const hasActiveProducts = category.products.some( product => product.status === 'active' && product.product_availability === 'selling');
     console.log(hasActiveProducts,"hasActiveProducts ")
     if (hasActiveProducts) {
@@ -91,6 +95,6 @@ export class CategoryService {
         .execute();
 
   }
-
+  }
 }
 
