@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { IsNull, Repository } from 'typeorm';
 
-import { Repository } from 'typeorm';
 
 import { Products } from '../products/entities';
 import { AddCategoryDTO } from './dto/addCategory.dto';
