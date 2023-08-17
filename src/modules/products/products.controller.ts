@@ -26,7 +26,7 @@ export class ProductsController {
     return product;
   }
 
-  @Post('/create')
+  @Post()
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
