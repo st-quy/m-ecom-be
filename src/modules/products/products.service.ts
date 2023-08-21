@@ -113,7 +113,7 @@ export class ProductsService {
     product.status = updateFields.status ?? product.status;
     product.delete_At = updateFields.delete_At ? new Date(updateFields.delete_At) : product.delete_At;
     product.brand = updateFields.brand ?? product.brand;
-    product.category = updateFields.category ?? product.category;
+    product.category = updateFields.category !== undefined ? updateFields.category : null;
     product.product_availability = updateFields.product_availability ?? product.product_availability;
     product.price = updateFields.price ?? product.price;
     product.description = updateFields.description ?? product.description;

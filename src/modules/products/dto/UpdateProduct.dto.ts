@@ -3,7 +3,6 @@ import { Category } from "src/modules/category/entities";
 export class UpdateProductDTO {
     product_name: string;
     brand: string;
-    category: Category;
     price: number;
     description: string;
     image: string;
@@ -13,4 +12,5 @@ export class UpdateProductDTO {
     quantity_inventory: number; 
     status: string;
     delete_At: Date;
+    category: Category ;
 }
