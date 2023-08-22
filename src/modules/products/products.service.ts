@@ -88,7 +88,7 @@ export class ProductsService {
   }
 
   // Cập nhật sản phẩm theo ID
-  async updateProduct(id: number, updateProductDTO: UpdateProductDTO): Promise<ProductDTO> {
+  async updateProduct(id: number,image: Express.Multer.File, updateProductDTO: UpdateProductDTO): Promise<ProductDTO> {
     const product = await this.productsRepository.findOne({ where: { id, delete_At: null } });
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found or already deleted`);
@@ -117,7 +117,7 @@ export class ProductsService {
     product.product_availability = updateFields.product_availability ?? product.product_availability;
     product.price = updateFields.price ?? product.price;
     product.description = updateFields.description ?? product.description;
-    product.image = updateFields.image ?? product.image;
+    product.image = image ? image.filename : null; // Lưu tên tệp tin hình ảnh
     product.sku = updateFields.sku ?? product.sku;
   
     return await this.productsRepository.save(product);
