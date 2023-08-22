@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import jwt, { TokenExpiredError } from 'jsonwebtoken'; // Thêm tokenExpiredError vào đây
 import { ConfigService } from '@nestjs/config';
 import { Users } from '../users/entities';
 import { RegisterDto } from './dto/register.dto';
@@ -86,7 +85,6 @@ export class AuthService {
     const accessToken = await this.generateAccessToken(user);
     return { accessToken};
   }
-  
   
   private async generateAccessToken(user: Users): Promise<string> {
     const payload = { id: user.id, phoneNumber: user.phoneNumber, refreshToken: user.refreshToken };

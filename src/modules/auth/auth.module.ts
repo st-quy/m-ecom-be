@@ -1,4 +1,3 @@
-// auth/auth.module.ts
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,7 +12,7 @@ import { Users } from '../users/entities';
       JwtModule.register({
         global:true,
         secret:'123456',
-        signOptions:{expiresIn:10}
+        signOptions:{expiresIn:14400}
       }),
       ConfigModule
     ],

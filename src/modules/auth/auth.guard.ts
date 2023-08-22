@@ -13,7 +13,6 @@ export class AuthGuard implements CanActivate {
         if (!token) {
             throw new UnauthorizedException();
         }
-
         try {
             const payload = await this.jwtService.verifyAsync(token, {
                 secret: this.configService.get<string>('SECRET')
@@ -25,13 +24,11 @@ export class AuthGuard implements CanActivate {
                 message: "Token expired"
             }, 419)
         }
-
         return true;
     }
 
     private extractTokenFromHeader(request: Request): string | undefined {
         const [type, token] = request.headers.authorization ? request.headers.authorization.split(' ') : [];
-
         return type === 'Bearer' ? token : undefined;
     }
 }
