@@ -1,4 +1,4 @@
-import { Injectable, Param } from '@nestjs/common';
+import { Injectable, NotFoundException, Param } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Carts, CartsProducts } from './entities';
@@ -25,6 +25,9 @@ export class CartsService {
             .leftJoinAndSelect('cartsProduct.product', 'product')
             .where('cart.user = :userId', { userId })
             .getMany();
+            if (!carts || carts.length === 0) {
+                throw new NotFoundException(`No carts found for userId ${userId}`);
+            }
         return carts;
     }
 
