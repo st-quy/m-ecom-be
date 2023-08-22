@@ -15,16 +15,16 @@ export class Users {
   @Column()
   password: string;
 
-  @Column()
+  @Column({nullable:true})
   address: string;
 
-  @Column()
+  @Column({nullable:true})
   name: string;
 
   @Column()
   status: string;
   
-  @Column()
+  @Column({default:null})
   refreshToken: string;
 
     // mối quan hệ với bảng role
@@ -33,5 +33,5 @@ export class Users {
     // mối quan hệ với bảng carts
   @OneToOne(() => Carts,cart => cart.user)
   cart: Carts;
-
 }
+

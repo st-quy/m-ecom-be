@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
 import * as path from 'path'; // Import module path
 import { CartsModule } from './modules/carts/carts.module';
 import { CategoryModule } from './modules/category/category.module';
@@ -10,6 +9,7 @@ import { PaymentModule } from './modules/payment/payment.module';
 import { ProductsModule } from './modules/products/products.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 
 
@@ -37,7 +37,8 @@ import { UsersModule } from './modules/users/users.module';
     PaymentModule,
     ProductsModule,
     RolesModule,
-    UsersModule
+    UsersModule,
+    AuthModule
   
   ],
   controllers: [],

@@ -1,5 +1,4 @@
-
-import { Controller, Post, Body, Delete, Patch, Param, Get, ParseIntPipe,Query, UseInterceptors, UploadedFile  } from '@nestjs/common';
+import { Controller, Post, Body, Delete, Patch, Param, Get, ParseIntPipe,Query,UseGuards ,UseInterceptors, UploadedFile  } from '@nestjs/common';
 import { CreateProductDTO } from './dto/CreateProduct.dto';
 import { Products } from './entities/products.entity';
 import { ProductsService } from './products.service';
@@ -7,6 +6,7 @@ import { SortBy } from 'src/commons/constants/enum';
 import { getProductsDto } from './dto/getProductsDto.dto';
 import { UpdateProductDTO } from './dto/UpdateProduct.dto';
 import { ProductDTO } from './dto/Product.dto';
+import { AuthGuard } from '../auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 
@@ -14,18 +14,22 @@ import { diskStorage } from 'multer';
 export class ProductsController {
   constructor(private readonly productService: ProductsService) {}
   
+  @UseGuards(AuthGuard)
    @Get()
     async searchProducts(@Query() searchDto: getProductsDto): Promise<Products[]> {
       return this.productService.searchProducts(searchDto);
     }
 
   // Lấy sản phẩm theo ID
+  @UseGuards(AuthGuard)
   @Get(':id')
   async getProductById(@Param('id', ParseIntPipe) id: number): Promise<ProductDTO> {
     const product = await this.productService.findById(id);
     return product;
   }
 
+  // Thêm sản Phẩm
+  @UseGuards(AuthGuard)
   @Post()
   @UseInterceptors(
     FileInterceptor('image', {
@@ -46,6 +50,7 @@ export class ProductsController {
 
 
   //Cập nhật sản phẩm theo ID
+  @UseGuards(AuthGuard)
   @Patch(':id')
   async updateProduct(@Param('id') id: number, @Body() updateProductDTO: UpdateProductDTO) {
     return this.productService.updateProduct(id, updateProductDTO);
@@ -54,6 +59,7 @@ export class ProductsController {
 
 
   //Xóa sản phẩm theo ID
+  @UseGuards(AuthGuard)
   @Delete(':id')
   async deleteProduct(@Param('id') id: number) {
     return this.productService.deleteProduct(id);

@@ -11,7 +11,7 @@ export class Category {
 
   @Column()
   category_name: string;
-
+  
   @Column({ type: 'timestamp', default: null })
   delete_at:Date;
 
