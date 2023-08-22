@@ -13,6 +13,10 @@ export class Carts {
 
   @Column()
   total_price: number;
+  
+  @Column()
+  total_quantity: number;
+
 
   @OneToOne(() => Users, user => user.cart)
   @JoinColumn()
