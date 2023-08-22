@@ -17,8 +17,9 @@ async function bootstrap() {
   const documnent = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documnent);
   app.enableCors();
-  console.log(join(__dirname, '../../uploads'))//thêm này cho phần static file
-  app.useStaticAssets(join(__dirname, '../../uploads'));//thêm này cho phần static file
+  app.useStaticAssets(join(__dirname , '..', 'uploads'), {
+    index: false,
+  });
   await app.listen(3000);
 }
 bootstrap();

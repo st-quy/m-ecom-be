@@ -5,15 +5,16 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typ
 
 @Entity()
 export class Category {
-  map(arg0: (category: any) => { id: any; category_name: any; }) {
-    throw new Error('Method not implemented.');
-  }
+ 
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   category_name: string;
+  
+  @Column({ type: 'timestamp', default: null })
+  delete_at:Date;
 
-  @OneToMany(() => Products, product => product.category , {nullable:true})
+  @OneToMany(() => Products, product => product.category,{ cascade: true })
   products: Products[];
 }
