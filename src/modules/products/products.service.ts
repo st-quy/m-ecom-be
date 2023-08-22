@@ -69,15 +69,15 @@ export class ProductsService {
   }
   
   // Thêm sản phẩm
-  async createProduct(createProductDTO: CreateProductDTO): Promise<ProductDTO>  {
-    const product = new ProductDTO();
+  async createProduct(image: Express.Multer.File, createProductDTO: CreateProductDTO): Promise<ProductDTO> {
+    const product = new Products();
     product.product_name = createProductDTO.product_name;
     product.brand = createProductDTO.brand;
     product.category = createProductDTO.category;
     product.price = createProductDTO.price;
-    product.product_availability = 'selling'
+    product.product_availability = 'selling';
     product.description = createProductDTO.description;
-    product.image = createProductDTO.image;
+    product.image = image ? image.filename : null; // Lưu tên tệp tin hình ảnh
     product.sku = createProductDTO.sku;
     product.quantity_inventory = createProductDTO.quantity_inventory;
     product.status = 'active';
@@ -113,7 +113,7 @@ export class ProductsService {
     product.status = updateFields.status ?? product.status;
     product.delete_At = updateFields.delete_At ? new Date(updateFields.delete_At) : product.delete_At;
     product.brand = updateFields.brand ?? product.brand;
-    product.category = updateFields.category ?? product.category;
+    product.category = updateFields.category !== undefined ? updateFields.category : null;
     product.product_availability = updateFields.product_availability ?? product.product_availability;
     product.price = updateFields.price ?? product.price;
     product.description = updateFields.description ?? product.description;

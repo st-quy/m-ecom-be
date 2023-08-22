@@ -50,10 +50,9 @@ export class Products {
 
     @OneToMany(() => CartsProducts, cartsProduct => cartsProduct.product)
     cartsProducts: CartsProducts[];
-
-    @ManyToOne(() => Category, category => category.products)
-    category: Category;
-
+  
+    @ManyToOne(() => Category, category => category.products, { nullable: true })
+    category: Category | null;
 }
 
 
