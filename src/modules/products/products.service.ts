@@ -119,7 +119,7 @@ export class ProductsService {
     product.description = updateFields.description ?? product.description;
     product.image = updateFields.image ?? product.image;
     product.sku = updateFields.sku ?? product.sku;
-  
+
     return await this.productsRepository.save(product);
   }
   
