@@ -9,7 +9,6 @@ export class CartsController {
 
     constructor(private readonly cartsService: CartsService) { }
 
-
     @Get(':userId')
     async getCartsByUserId(@Param('userId') userId: number) {
         return this.cartsService.getCartsByUserId(userId);
@@ -30,6 +29,5 @@ export class CartsController {
     const cart = await this.cartsService.removeFromCart(cartId, productId);
     return cart;
     }
-
 
 }

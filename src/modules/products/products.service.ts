@@ -87,8 +87,6 @@ export class ProductsService {
     return await this.productsRepository.save(product);
   }
 
-  // Cập nhật sản phẩm theo ID
- 
   async updateProduct(id: number, image: Express.Multer.File, updateProductDTO: UpdateProductDTO): Promise<ProductDTO> {
     const product = await this.productsRepository.findOne({ where: { id, delete_At: null } });
 
@@ -128,7 +126,6 @@ export class ProductsService {
     return await this.productsRepository.save(product);
    
   }
-
   // Xóa sản phẩm theo ID
   async deleteProduct(id: number): Promise<void> {
     const product = await this.productsRepository.findOne({ where: { id } });
