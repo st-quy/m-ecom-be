@@ -45,8 +45,22 @@ export class ProductsController {
 
   //Cập nhật sản phẩm theo ID
   @Patch(':id')
-  async updateProduct(@Param('id') id: number, @Body() updateProductDTO: UpdateProductDTO) {
-    return this.productService.updateProduct(id, updateProductDTO);
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          cb(null, `${file.originalname}`);
+        },
+      }),
+    })
+  ) 
+  async updateProduct(
+    @Param('id') id: number,
+    @UploadedFile() image: Express.Multer.File,
+    @Body() updateProductDTO: UpdateProductDTO,
+  ) {
+    return this.productService.updateProduct(id, image, updateProductDTO);
   }
 
   //Xóa sản phẩm theo ID

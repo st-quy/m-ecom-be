@@ -87,42 +87,43 @@ export class ProductsService {
     return await this.productsRepository.save(product);
   }
 
-  // Cập nhật sản phẩm theo ID
-  async updateProduct(id: number, updateProductDTO: UpdateProductDTO): Promise<ProductDTO> {
+  async updateProduct(id: number, image: Express.Multer.File, updateProductDTO: UpdateProductDTO): Promise<ProductDTO> {
     const product = await this.productsRepository.findOne({ where: { id, delete_At: null } });
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found or already deleted`);
     }
-    const updateFields = updateProductDTO;
-    if (updateFields.delete_At === null) {
-      product.delete_At = null; 
+
+    if (updateProductDTO.delete_At === null) {
+      product.delete_At = null;
       product.product_availability = 'selling';
-      product.status = 'active'
+      product.status = 'active';
     }
-    if (
-      product.status === 'inactive' &&
-      product.product_availability === 'selling' && 
-      product.delete_At !== null
-    ) {
+
+    if (product.status === 'inactive' && product.product_availability === 'selling' && product.delete_At !== null) {
       throw new NotFoundException('Cannot update product with ceased, inactive status, and deleted product');
     }
-    // Perform the updates for other fields
-    product.product_name = updateFields.product_name ?? product.product_name;
-    product.quantity_sold = updateFields.quantity_sold ?? product.quantity_sold;
-    product.quantity_inventory = updateFields.quantity_inventory ?? product.quantity_inventory;
-    product.status = updateFields.status ?? product.status;
-    product.delete_At = updateFields.delete_At ? new Date(updateFields.delete_At) : product.delete_At;
-    product.brand = updateFields.brand ?? product.brand;
-    product.category = updateFields.category !== undefined ? updateFields.category : null;
-    product.product_availability = updateFields.product_availability ?? product.product_availability;
-    product.price = updateFields.price ?? product.price;
-    product.description = updateFields.description ?? product.description;
-    product.image = updateFields.image ?? product.image;
-    product.sku = updateFields.sku ?? product.sku;
 
-    return await this.productsRepository.save(product);
-  }
+    // Update other fields
+    product.product_name = updateProductDTO.product_name ?? product.product_name;
+    product.quantity_sold = updateProductDTO.quantity_sold ?? product.quantity_sold;
+    product.quantity_inventory = updateProductDTO.quantity_inventory ?? product.quantity_inventory;
+    product.status = updateProductDTO.status ?? product.status;
+    product.delete_At = updateProductDTO.delete_At ? new Date(updateProductDTO.delete_At) : product.delete_At;
+    product.brand = updateProductDTO.brand ?? product.brand;
+    product.category = updateProductDTO.category !== undefined ? updateProductDTO.category : null;
+    product.product_availability = updateProductDTO.product_availability ?? product.product_availability;
+    product.price = updateProductDTO.price ?? product.price;
+    product.description = updateProductDTO.description ?? product.description;
+    product.sku = updateProductDTO.sku ?? product.sku;
+    // Process the image file
+    if (image) {
+      product.image = image.filename;
+    }
+
   
+    return await this.productsRepository.save(product);
+   
+  }
   // Xóa sản phẩm theo ID
   async deleteProduct(id: number): Promise<void> {
     const product = await this.productsRepository.findOne({ where: { id } });
