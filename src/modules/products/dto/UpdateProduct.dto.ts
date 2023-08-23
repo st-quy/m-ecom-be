@@ -1,5 +1,6 @@
 import { Category } from "src/modules/category/entities";
-
+import { Products } from "../entities";
+Products
 export class UpdateProductDTO {
     product_name: string;
     brand: string;

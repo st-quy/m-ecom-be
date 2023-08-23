@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Delete, Patch, Param, Get, ParseIntPipe,Query,UseGuards ,UseInterceptors, UploadedFile  } from '@nestjs/common';
+import { Controller, Post, Body, Delete, Patch, Param, Get, ParseIntPipe,Query,UseGuards ,UseInterceptors, UploadedFile, Put  } from '@nestjs/common';
 import { CreateProductDTO } from './dto/CreateProduct.dto';
 import { Products } from './entities/products.entity';
 import { ProductsService } from './products.service';
@@ -20,7 +20,7 @@ export class ProductsController {
       return this.productService.searchProducts(searchDto);
     }
 
-  // Lấy sản phẩm theo ID
+  //Lấy sản phẩm theo ID
   @UseGuards(AuthGuard)
   @Get(':id')
   async getProductById(@Param('id', ParseIntPipe) id: number): Promise<ProductDTO> {
@@ -48,17 +48,29 @@ export class ProductsController {
     return await this.productService.createProduct(image, createProductDTO);
   }
 
-
-  //Cập nhật sản phẩm theo ID
+  
   @UseGuards(AuthGuard)
   @Patch(':id')
-  async updateProduct(@Param('id') id: number, @Body() updateProductDTO: UpdateProductDTO) {
-    return this.productService.updateProduct(id, updateProductDTO);
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          cb(null, `${file.originalname}`);
+        },
+      }),
+    })
+  ) 
+  async updateProduct(
+    @Param('id') id: number,
+    @UploadedFile() image: Express.Multer.File,
+    @Body() updateProductDTO: UpdateProductDTO,
+  ) {
+    return this.productService.updateProduct(id, image, updateProductDTO);
   }
 
 
-
-  //Xóa sản phẩm theo ID
+ //Xóa sản phẩm theo ID
   @UseGuards(AuthGuard)
   @Delete(':id')
   async deleteProduct(@Param('id') id: number) {
