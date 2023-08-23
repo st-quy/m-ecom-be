@@ -37,21 +37,7 @@ export class AuthService {
     return await this.usersRepository.save(newUser);
   }
 
-  async login(loginDto: LoginDto): Promise<any> {
-    const user = await this.usersRepository.findOne({ where: { phoneNumber: loginDto.phoneNumber } });
-    if (!user) {
-      throw new HttpException('User does not exist', HttpStatus.UNAUTHORIZED);
-    }
-    const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-    const accessToken = await this.generateAccessToken(user);
-    const refreshToken = await this.generateRefreshToken();
-    user.refreshToken = refreshToken;
-    await this.usersRepository.save(user);
-    return { accessToken, refreshToken };
-  }
+ 
 
   async logout(logoutDto: LogoutDto): Promise<void> {
     const { refreshToken } = logoutDto;
@@ -86,8 +72,34 @@ export class AuthService {
     return { accessToken};
   }
   
+  async login(loginDto: LoginDto): Promise<any> {
+    const user = await this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role') // Thêm phần này để load mối quan hệ role
+      .where('user.phoneNumber = :phoneNumber', { phoneNumber: loginDto.phoneNumber })
+      .getOne();
+    if (!user) {
+      throw new HttpException('User does not exist', HttpStatus.UNAUTHORIZED);
+    }
+    const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    
+    const refreshToken = await this.generateRefreshToken();
+    user.refreshToken = refreshToken; // Update user's refreshToken
+    await this.usersRepository.save(user);
+  
+    const accessToken = await this.generateAccessToken(user); // Use the updated refreshToken here
+    return { accessToken, refreshToken };
+  }
+  
   private async generateAccessToken(user: Users): Promise<string> {
-    const payload = { id: user.id, phoneNumber: user.phoneNumber, refreshToken: user.refreshToken };
+    const payload = { id: user.id,
+      phoneNumber: user.phoneNumber,
+      refreshToken: user.refreshToken,
+      role: user.role.nameRole
+    };
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: this.configService.get<string>('ACCESS_TOKEN_SECRET'),
       expiresIn: this.configService.get<string>('EXP_IN_ACCESS_TOKEN'),
