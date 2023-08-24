@@ -9,6 +9,9 @@ import { successException } from '../Exception/succesExeption';
 
 @Injectable()
 export class UsersService {
+  findOneByPhoneNumber(adminPhoneNumber: string) {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
@@ -51,5 +54,14 @@ export class UsersService {
     user.status = 'inactive';
     await this.usersRepository.save(user);
     throw new successException('Delete Product Succesfull');
+  }
+  
+  async findByPhoneNumber(phoneNumber: string): Promise<Users | undefined> {
+    return this.usersRepository.findOne({ where: { phoneNumber } });
+  }
+
+  async create(user: Partial<Users>): Promise<Users> {
+    const newUser = this.usersRepository.create(user);
+    return this.usersRepository.save(newUser);
   }
 }

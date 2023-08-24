@@ -29,6 +29,7 @@ export class Users {
 
     // mối quan hệ với bảng role
   @ManyToOne(() => Roles, role => role.user)
+  @JoinColumn({ name: 'role_id'})
   role: Roles;
     // mối quan hệ với bảng carts
   @OneToOne(() => Carts,cart => cart.user)
