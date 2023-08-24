@@ -101,8 +101,9 @@ export class AuthService {
   private async generateAccessToken(user: Users): Promise<string> {
     const payload = { id: user.id,
       phoneNumber: user.phoneNumber,
+      name: user.name,
+      role: user.role.nameRole,
       refreshToken: user.refreshToken,
-      role: user.role.nameRole
     };
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: this.configService.get<string>('ACCESS_TOKEN_SECRET'),
