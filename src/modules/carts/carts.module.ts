@@ -6,10 +6,12 @@ import { Carts } from './entities/carts.entity';
 import { CartsController } from './carts.controller';
 import { Products } from '../products/entities';
 import { Users } from '../users/entities';
+import { ConfigModule } from '@nestjs/config';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Carts,CartsProducts,Products,Users])],
+  imports: [TypeOrmModule.forFeature([Carts,CartsProducts,Products,Users]),
+  ConfigModule],
   controllers: [CartsController],
   providers: [CartsService]
 })
