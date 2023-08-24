@@ -18,7 +18,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
-
+  
+  async findOneByPhoneNumber(phoneNumber: string): Promise<Users | undefined> {
+    return this.usersRepository.findOne({ where: { phoneNumber } });
+  }
+  
   async register(registerDto: RegisterDto): Promise<Users> {
     const { phoneNumber, password } = registerDto;
     const existingUser = await this.usersRepository.findOne({

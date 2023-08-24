@@ -20,7 +20,6 @@ export class Checkout {
   @Column()
   Recipient_phone: string;
 
-
   @ManyToOne(() => Carts, cart => cart.checkouts)
   cart: Carts;
 
