@@ -4,8 +4,7 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { LogoutDto } from './dto/logout.dto';
-import { AuthGuard } from '../guards/auth.guard';
-import { RoleGuard } from '../guards/role.guard';
+
 
 @Controller('auth')
 export class AuthController {
@@ -23,15 +22,13 @@ export class AuthController {
       return this.authService.login(loginUserDto);
   }
 
-  @UseGuards(new RoleGuard(['user','admin','marketing']))
-  @UseGuards(AuthGuard)
+  
   @Post('logout')
   async logout(@Body() logoutDto: LogoutDto) {
     return this.authService.logout(logoutDto);
   }
 
-  @UseGuards(new RoleGuard(['user','admin','marketing']))
-  @UseGuards(AuthGuard)
+  
   @Post('refresh')
     refreshToken(@Body() {refreshToken}):Promise<any>{
         return this.authService.refreshToken(refreshToken);
