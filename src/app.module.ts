@@ -10,11 +10,15 @@ import { ProductsModule } from './modules/products/products.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
-
+import { FirebaseController } from './modules/firebase/firebase.controller';
+import { FirebaseService } from './modules/firebase/firebase.service';
+import { PassportModule } from '@nestjs/passport';
+import { GoogleStrategy } from './modules/auth/strategies/google.strategy';
 
 
 @Module({
   imports: [
+    PassportModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -28,6 +32,7 @@ import { AuthModule } from './modules/auth/auth.module';
 
         entities:  [path.join(__dirname, '**', '*.entity{.ts,.js}')],
         synchronize: true,
+        isGlobal: true,
       }),
       inject: [ConfigService], 
     }),
@@ -41,7 +46,9 @@ import { AuthModule } from './modules/auth/auth.module';
     AuthModule
   
   ],
-  controllers: [],
-  providers: [],
+  controllers: [FirebaseController],
+  providers: [FirebaseService ,GoogleStrategy,],
 })
-export class AppModule {}
+export class AppModule {
+  
+}
