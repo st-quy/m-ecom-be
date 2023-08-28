@@ -21,7 +21,7 @@ export class CartsController {
     @UseGuards(new RoleGuard(['user']))
     @UseGuards(AuthGuard)
     @Post('/userId/:userId/productId/:productId')
-    async addToCart(@Param('userId') userId: number, @Param('productId') productId: number): Promise<CartsProducts> {
+    async addToCart(@Param('userId') userId: number, @Param('productId') productId: number): Promise<string> {
         return this.cartsService.addToCart(userId, productId);
     }
 

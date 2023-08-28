@@ -1,36 +1,49 @@
-  version: '3.9'
+version: '3.9'
 
-  services:
-    nestapp:
-      container_name: web_app
-      image: postgresql_db
-      build: .
-      ports:
-        - 3000:3000
-      environment:
-        - DB_TYPE=${DB_TYPE}
-        - PG_HOST=${PG_HOST}
-        - PG_USER=${PG_USER}
-        - PG_PASSWORD=${PG_PASSWORD}
-        - PG_DB=${PG_DB}
-        - PG_PORT=${PG_PORT}
-      depends_on:
-        - db
-      env_file:
-        - .env
-    db:
-      container_name: db  
-      image: postgres:12
-      ports:
-        - 5432:5432
-      environment:
-        - POSTGRES_USER=${PG_USER}
-        - POSTGRES_PASSWORD=${PG_PASSWORD}
-        - POSTGRES_DB=${PG_DB}
-      volumes:
-        - pgdata:/var/lib/postgresql/data
-      env_file:
-        - .env
+services:
+  nestapp:
+    container_name: web_app
+    image: your_nest_app_image_name
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      - DB_TYPE=${DB_TYPE}
+      - PG_HOST=${PG_HOST}
+      - PG_USER=${PG_USER}
+      - PG_PASSWORD=${PG_PASSWORD}
+      - PG_DB=${PG_DB}
+      - PG_PORT=${PG_PORT}
+      - REDIS_HOST=${REDIS_HOST} # Địa chỉ của Redis container
+      - REDIS_PORT=${REDIS_PORT} # Cổng Redis
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
 
-  volumes:
-    pgdata: {}
+  db:
+    container_name: db
+    image: postgres:12
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PASSWORD}
+      - POSTGRES_DB=${PG_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - 6379:6379
+    volumes: 
+      - redis:/data
+
+volumes:
+  pgdata: {}
+  redis: {}
