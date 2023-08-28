@@ -146,6 +146,8 @@ export class CheckoutService {
           .set({ total_quantity: 0, total_price: 0 })
           .where('id = :cartId', { cartId })
           .execute();
+
+          return " Thanh toán thành công ";
       }
 
       }
