@@ -11,29 +11,29 @@ export class CartsController {
 
     constructor(private readonly cartsService: CartsService) { }
 
-    // @UseGuards(new RoleGuard(['user']))
-    // @UseGuards(AuthGuard)
+    @UseGuards(new RoleGuard(['user']))
+    @UseGuards(AuthGuard)
     @Get(':userId')
     async getCartsByUserId(@Param('userId') userId: number) {
         return this.cartsService.getCartsByUserId(userId);
     }
 
-    // @UseGuards(new RoleGuard(['user']))
-    // @UseGuards(AuthGuard)
+    @UseGuards(new RoleGuard(['user']))
+    @UseGuards(AuthGuard)
     @Post('/userId/:userId/productId/:productId')
-    async addToCart(@Param('userId') userId: number, @Param('productId') productId: number): Promise<CartsProducts> {
+    async addToCart(@Param('userId') userId: number, @Param('productId') productId: number): Promise<string> {
         return this.cartsService.addToCart(userId, productId);
     }
 
-    // @UseGuards(new RoleGuard(['user']))
-    // @UseGuards(AuthGuard)
+    @UseGuards(new RoleGuard(['user']))
+    @UseGuards(AuthGuard)
     @Patch()
     async updateCart(@Body() updateToCartDTO: updateCartDTO) {
         return await this.cartsService.updateCart(updateToCartDTO);
     }
 
-    // @UseGuards(new RoleGuard(['user']))
-    // @UseGuards(AuthGuard)
+    @UseGuards(new RoleGuard(['user']))
+    @UseGuards(AuthGuard)
     @Delete('remove/:userId/:productId')
     async removeFromCart(@Param('userId') cartId: string, @Param('productId') productId: string): Promise<Carts> {
     const cart = await this.cartsService.removeFromCart(cartId, productId);

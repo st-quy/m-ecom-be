@@ -31,7 +31,7 @@ export class CartsService {
         return carts;
     }
 
-    async addToCart(@Param('userId') userId: number, @Param('productId') productId: number): Promise<CartsProducts> {
+    async addToCart(@Param('userId') userId: number, @Param('productId') productId: number): Promise<string> {
 
         let cart = await this.cartsRepository.createQueryBuilder('cart')
             .where('cart.user = :userId', { userId })
@@ -63,6 +63,8 @@ export class CartsService {
             cart.total_quantity += 1;
             cart.total_price += product.price;
             await this.cartsRepository.save(cart);
+
+            return "Thêm sản phẩm thành công";
         }
         else {
             if (cartsProduct) {
@@ -71,6 +73,7 @@ export class CartsService {
 
                 cart.total_price += product.price * cartsProduct.quantity;
                 await this.cartsRepository.save(cart);
+                return "Thêm sản phẩm thành công";
             }
             else {
                 const cartsProduct = new CartsProducts();
@@ -81,14 +84,16 @@ export class CartsService {
                 // Cập nhật thông tin của giỏ hàng
                 cart.total_quantity += 1;
                 cart.total_price += product.price;
-                await this.cartsRepository.save(cart);
+                await this.cartsRepository.save(cart)
+
+                return "Thêm sản phẩm thành công";
+
+               
             }
 
-            await this.cartsRepository.save(cart);
         }
+       
 
-
-        return "Thêm sản phẩm thành công";
     }
 
     async updateCart(updateCartDTO: updateCartDTO): Promise<Carts> {

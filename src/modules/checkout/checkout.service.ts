@@ -131,8 +131,7 @@ export class CheckoutService {
 
 
           const cartId = cachedData['CartId'];
-          console.log(cartId,'cartId')
-
+         
           await this.cartsProductsRepository
           .createQueryBuilder()
           .delete()
@@ -146,8 +145,7 @@ export class CheckoutService {
           .set({ total_quantity: 0, total_price: 0 })
           .where('id = :cartId', { cartId })
           .execute();
-
-          return " Thanh toán thành công ";
+        return "Thanh toán thành công";
       }
 
       }
