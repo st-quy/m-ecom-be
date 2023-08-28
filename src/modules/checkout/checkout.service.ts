@@ -25,7 +25,10 @@ export class CheckoutService {
     @Inject(CACHE_MANAGER) private readonly cacheService: Cache,
   ) {}
 
-
+    
+  async findAll(): Promise<Checkout[]> {
+    return this.checkoutRepository.find();
+  }
 
   async generateQRCode(checkoutDto: createCheckoutDto): Promise<any> {
     const { Recipient_name, delivery_address, Recipient_phone,  userId, Payment } = checkoutDto;
