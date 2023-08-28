@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { createCheckoutDto } from './dto/createCheckoutDto.dto';
 import { Checkout } from './entities';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, getConnection } from 'typeorm';
 import * as crypto from 'crypto';
 import axios from 'axios';
 import { Carts, CartsProducts } from '../carts/entities';
@@ -130,12 +130,26 @@ export class CheckoutService {
           await this.checkoutRepository.save(checkout);
 
 
-          // const cartId = cachedData['CartId'];
-          // const cartsProduct = await this.cartsProductsRepository.findOne({ where: { : cartId }});
-          // console.log(cartsProduct,'cartsProduct')
+          const cartId = cachedData['CartId'];
+          console.log(cartId,'cartId')
+
+          await this.cartsProductsRepository
+          .createQueryBuilder()
+          .delete()
+          .where('cartId = :cartId', { cartId })
+          .execute();
+
+
+          await this.cartsRepository
+          .createQueryBuilder()
+          .update(Carts)
+          .set({ total_quantity: 0, total_price: 0 })
+          .where('id = :cartId', { cartId })
+          .execute();
+      }
 
       }
   }
 
 }
-}
+
