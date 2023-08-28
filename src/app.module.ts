@@ -20,8 +20,8 @@ import * as redisStore from 'cache-manager-redis-store';
     CacheModule.register({
       isGlobal: true,
       store: redisStore,
-      host: 'localhost',
-      port: 6379,
+      host: process.env.REDIS_HOST, 
+      port: parseInt(process.env.REDIS_PORT), 
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

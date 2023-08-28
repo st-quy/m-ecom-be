@@ -3,8 +3,10 @@ version: '3.9'
 services:
   nestapp:
     container_name: web_app
-    image: your_nest_app_image_name
-    build: .
+    image: postgresql_db
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - 3000:3000
     environment:
@@ -39,6 +41,9 @@ services:
   redis:
     container_name: redis
     image: redis:latest
+    environment:
+      - REDIS_HOST=${REDIS_HOST} # Địa chỉ của Redis container
+      - REDIS_PORT=${REDIS_PORT} # Cổng Redis
     ports:
       - 6379:6379
     volumes: 
