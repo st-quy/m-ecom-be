@@ -5,9 +5,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as crypto from 'crypto';
 import axios from 'axios';
-import { Carts } from '../carts/entities';
+import { Carts, CartsProducts } from '../carts/entities';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { saveDataDto } from './dto/saveData.dto';
 
 @Injectable()
 export class CheckoutService {
@@ -17,6 +18,9 @@ export class CheckoutService {
     private readonly checkoutRepository: Repository<Checkout>,
     @InjectRepository(Carts)
     private readonly cartsRepository: Repository<Carts>,
+     @InjectRepository(CartsProducts)
+    private readonly cartsProductsRepository: Repository<CartsProducts>,
+ 
  
     @Inject(CACHE_MANAGER) private readonly cacheService: Cache,
   ) {}
@@ -110,4 +114,28 @@ export class CheckoutService {
     req.write(requestBody);
     req.end();
   }
+
+  async saveData(saveDataDto: saveDataDto): Promise<any> {
+      const { message , orderId } = saveDataDto;
+      if(message === "Successful"){
+        const cacheKey = orderId;
+        const cachedData = await this.cacheService.get(cacheKey);
+        if (cachedData) {
+          const checkout = new Checkout();
+          checkout.Recipient_name = cachedData['Recipient_name'];
+          checkout.delivery_address = cachedData['delivery_address'];
+          checkout.Recipient_phone = cachedData['Recipient_phone'];
+          checkout.payment = cachedData ['Payment']
+          checkout.cart = cachedData ['CartId']
+          await this.checkoutRepository.save(checkout);
+
+
+          // const cartId = cachedData['CartId'];
+          // const cartsProduct = await this.cartsProductsRepository.findOne({ where: { : cartId }});
+          // console.log(cartsProduct,'cartsProduct')
+
+      }
+  }
+
+}
 }
