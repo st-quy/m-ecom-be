@@ -28,7 +28,7 @@ export class ProductsController {
   }
 
   // Thêm sản Phẩm
-  @UseGuards(new RoleGuard(['marketing']))
+  @UseGuards(new RoleGuard(['marketing','admin']))
   @UseGuards(AuthGuard)
   @Post()
   @UseInterceptors(

@@ -1,14 +1,14 @@
 // checkout.entity.ts
 import { Carts } from 'src/modules/carts/entities/carts.entity';
 import { Payment } from 'src/modules/payment/entities/payment.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne,OneToOne ,JoinColumn, CreateDateColumn} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne,OneToOne ,JoinColumn} from 'typeorm';
 
 @Entity()
 export class Checkout {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn()
+  @Column()
   date_of_payment: Date;
 
   @Column()
