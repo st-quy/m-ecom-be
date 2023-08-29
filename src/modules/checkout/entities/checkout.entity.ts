@@ -20,11 +20,13 @@ export class Checkout {
   @Column()
   Recipient_phone: string;
 
+  @Column({ default: null })
+  amount:number;
+
   @ManyToOne(() => Carts, cart => cart.checkouts)
   cart: Carts;
 
-  @OneToOne(() => Payment,payment=>payment.checkout)
-  @JoinColumn()
+  @ManyToOne(() => Payment,payment=>payment.checkout)
   payment: Payment;
 
 }
