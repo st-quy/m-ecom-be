@@ -27,7 +27,8 @@ import * as redisStore from 'cache-manager-redis-store';
       isGlobal: true,
       store: redisStore,
       host: process.env.REDIS_HOST, 
-      port: parseInt(process.env.REDIS_PORT), 
+      port: parseInt(process.env.REDIS_PORT),
+      auth_pass: process.env.REDIS_PASS, 
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

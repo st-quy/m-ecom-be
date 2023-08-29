@@ -18,6 +18,7 @@ services:
       - PG_PORT=${PG_PORT}
       - REDIS_HOST=${REDIS_HOST} # Địa chỉ của Redis container
       - REDIS_PORT=${REDIS_PORT} # Cổng Redis
+      - REDIS_PASS=${REDIS_PASS}
     depends_on:
       - db
       - redis
@@ -44,6 +45,7 @@ services:
     environment:
       - REDIS_HOST=${REDIS_HOST} # Địa chỉ của Redis container
       - REDIS_PORT=${REDIS_PORT} # Cổng Redis
+      - REDIS_PASS=${REDIS_PASS}
     ports:
       - 6379:6379
     volumes: 
