@@ -22,6 +22,7 @@ export class ProductsService {
       .where('product.delete_At IS NULL')
       .andWhere('product.status = :status', { status: 'active' })
     if (searchDto.productName) {
+      
       query.andWhere('LOWER(product.product_name) LIKE LOWER(:productName)', { productName: `%${searchDto.productName}%` });
     }
     if (searchDto.categoryId !== undefined) {
