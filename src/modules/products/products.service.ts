@@ -123,7 +123,7 @@ export class ProductsService {
 
   
     return await this.productsRepository.save(product);
-   
+
   }
   // Xóa sản phẩm theo ID
   async deleteProduct(id: number): Promise<void> {
