@@ -30,7 +30,13 @@ export class CheckoutService {
 
 
   async findAll(): Promise<Checkout[]> {
-    return this.checkoutRepository.find();
+   const checkout = await this.checkoutRepository
+   .createQueryBuilder('checkout')
+   .leftJoinAndSelect('checkout.payment','payment')
+   .leftJoinAndSelect('checkout.cart','cart')
+   .leftJoinAndSelect('cart.user','user')
+   .getMany()
+   return checkout;
   }
 
   async generateQRCode(checkoutDto: createCheckoutDto): Promise<any> {
