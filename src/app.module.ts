@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as path from 'path'; // Import module path
@@ -14,12 +15,20 @@ import { FirebaseController } from './modules/firebase/firebase.controller';
 import { FirebaseService } from './modules/firebase/firebase.service';
 import { PassportModule } from '@nestjs/passport';
 import { GoogleStrategy } from './modules/auth/strategies/google.strategy';
+import * as redisStore from 'cache-manager-redis-store';
+
 
 
 @Module({
   imports: [
     PassportModule,
     ConfigModule.forRoot(),
+    CacheModule.register({
+      isGlobal: true,
+      store: redisStore,
+      host: process.env.REDIS_HOST, 
+      port: parseInt(process.env.REDIS_PORT), 
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({

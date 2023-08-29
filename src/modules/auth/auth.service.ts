@@ -41,8 +41,6 @@ export class AuthService {
     return await this.usersRepository.save(newUser);
   }
 
- 
-
   async logout(logoutDto: LogoutDto): Promise<void> {
     const { refreshToken } = logoutDto;
     const user = await this.usersRepository.findOne({ where: { refreshToken } });
@@ -61,6 +59,7 @@ export class AuthService {
     }
     const user = await this.usersRepository.findOne({
       where: { id: decodedRefreshToken.sub, refreshToken },
+      relations: ['role'],
     });
     if (!user) {
       throw new HttpException('Refresh token is not valid', HttpStatus.BAD_REQUEST);
@@ -79,7 +78,7 @@ export class AuthService {
   async login(loginDto: LoginDto): Promise<any> {
     const user = await this.usersRepository
       .createQueryBuilder('user')
-      .leftJoinAndSelect('user.role', 'role') // Thêm phần này để load mối quan hệ role
+      .leftJoinAndSelect('user.role', 'role')
       .where('user.phoneNumber = :phoneNumber', { phoneNumber: loginDto.phoneNumber })
       .getOne();
     if (!user) {
@@ -99,6 +98,9 @@ export class AuthService {
   }
   
   private async generateAccessToken(user: Users): Promise<string> {
+    if (!user.role || !user.role.nameRole) {
+      throw new Error('User role information is missing');
+    }
     const payload = { id: user.id,
       phoneNumber: user.phoneNumber,
       name: user.name,

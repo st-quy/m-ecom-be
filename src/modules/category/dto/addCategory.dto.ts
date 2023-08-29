@@ -1,6 +1,6 @@
 
 
-export class   AddCategoryDTO {
+export class AddCategoryDTO {
 
 
     category_name:string;
