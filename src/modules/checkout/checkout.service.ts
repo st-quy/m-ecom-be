@@ -10,7 +10,7 @@ import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { saveDataDto } from './dto/saveData.dto';
 import { Products } from '../products/entities';
-
+import * as https from 'https';
 @Injectable()
 export class CheckoutService {
 
@@ -41,7 +41,6 @@ export class CheckoutService {
 
   async generateQRCode(checkoutDto: createCheckoutDto): Promise<any> {
     const { Recipient_name, delivery_address, Recipient_phone, userId, Payment } = checkoutDto;
-
     let cart = await this.cartsRepository.createQueryBuilder('cart')
       .where('cart.user = :userId', { userId })
       .getOne();
@@ -103,35 +102,25 @@ export class CheckoutService {
       }
     }
     //Send the request and get the response
-    const req = https.request(options, res => {
-      console.log(`Status: ${res.statusCode}`);
-      console.log(`Headers: ${JSON.stringify(res.headers)}`);
-      res.setEncoding('utf8');
-      res.on('data', async (body) => {
-        console.log('Body: ');
-        console.log(body);
-        console.log('payUrl: ');
-        console.log(JSON.parse(body).payUrl);
-        const orderId = JSON.parse(body).orderId;
-        const cacheKey = orderId;
-        console.log('orderId: ', orderId);
-        await this.cacheService.set(cacheKey, checkoutData);
-        const payUrl = JSON.parse(body).payUrl; 
-        return payUrl;
+    const payURL = await new Promise((resolve, reject) => {
+      const req = https.request(options, res => {
+        res.on('data', async (body) => {
+          const payUrl = JSON.parse(body).payUrl;
+          console.log('payUrl:', payUrl);
+          resolve(payUrl);
+        });
       });
-      res.on('end', () => {
-        console.log('No more data in response.');
+
+      req.on('error', error => {
+        reject(error);
       });
-    })
-    req.on('error', (e) => {
-      console.log(`problem with request: ${e.message}`);
+
+      req.write(requestBody);
+      req.end();
     });
-    // write data to request body
-    console.log("Sending....")
-    req.write(requestBody);
-    req.end();
-  
-  }
+
+    return payURL;
+}
 
   async saveData(saveDataDto: saveDataDto): Promise<any> {
     const { message, orderId } = saveDataDto;
