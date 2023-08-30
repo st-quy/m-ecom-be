@@ -1,6 +1,6 @@
 // payment.entity.ts
 import { Checkout } from 'src/modules/checkout/entities/checkout.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typeorm';
 
 
 @Entity()
@@ -11,6 +11,6 @@ export class Payment {
   @Column()
   method: string;
 
-  @OneToOne(() => Checkout, checkout => checkout.payment)
+  @OneToMany(() => Checkout, checkout => checkout.payment)
   checkout: Checkout;
 }
