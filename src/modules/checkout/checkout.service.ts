@@ -116,6 +116,8 @@ export class CheckoutService {
         const cacheKey = orderId;
         console.log('orderId: ', orderId);
         await this.cacheService.set(cacheKey, checkoutData);
+        const payUrl = JSON.parse(body).payUrl; 
+        return payUrl;
       });
       res.on('end', () => {
         console.log('No more data in response.');
@@ -128,6 +130,7 @@ export class CheckoutService {
     console.log("Sending....")
     req.write(requestBody);
     req.end();
+  
   }
 
   async saveData(saveDataDto: saveDataDto): Promise<any> {
