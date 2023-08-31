@@ -128,7 +128,7 @@ export class CheckoutService {
 
   async saveData(saveDataDto: saveDataDto): Promise<any> {
     const { message, orderId } = saveDataDto;
-    if (message === "Successful") {
+    if (message === "Successful.") {
       const cacheKey = orderId;
       const cachedData = await this.cacheService.get(cacheKey);
       if (cachedData) {

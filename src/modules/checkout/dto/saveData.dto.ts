@@ -1,4 +1,5 @@
-export class saveDataDto {
+export class 
+saveDataDto {
 
 
     message: string;
