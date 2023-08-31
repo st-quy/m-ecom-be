@@ -105,6 +105,10 @@ export class CheckoutService {
     const payURL = await new Promise((resolve, reject) => {
       const req = https.request(options, res => {
         res.on('data', async (body) => {
+          const orderId = JSON.parse(body).orderId;
+          const cacheKey = orderId;
+          console.log('orderId: ', orderId);
+          await this.cacheService.set(cacheKey, checkoutData);
           const payUrl = JSON.parse(body).payUrl;
           console.log('payUrl:', payUrl);
           resolve(payUrl);
