@@ -64,7 +64,7 @@ export class CheckoutService {
     const orderInfo = " thanh toán qua momo ";
     const amount = amount_cart;
     const orderId = Date.now().toString(); // Generate a unique order ID
-    const redirectUrl = `${process.env.APP_URL_FE}/profile/mybooking`;
+    const redirectUrl = `${process.env.APP_URL_FE}/homepage`;
     const ipnUrl = 'https://momo.vn';
     const requestId = Date.now().toString(); // Generate a unique request ID
     const requestType = 'captureWallet';

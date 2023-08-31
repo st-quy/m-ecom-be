@@ -21,7 +21,7 @@ export class FirebaseController {
   async googleLoginCallback(@Req() req: Request , @Res() res: Response) {
     const user = req.user as any;
     const accessToken = await this.generateAccessToken(user);
-    const redirectUrl = `http://localhost:3000/homepage?accessToken=${accessToken}`;
+    const redirectUrl = `https://m-comestic.netlify.app/homepage?accessToken=${accessToken}`;
     res.redirect(redirectUrl); // Use res.redirect instead of res.redirected
   }
 
