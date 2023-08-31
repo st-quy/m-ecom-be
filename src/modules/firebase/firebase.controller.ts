@@ -1,8 +1,8 @@
-import { Controller, Get, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
+import { Request , Response } from 'express';
 import * as admin from 'firebase-admin';
 
 @Controller()
@@ -16,13 +16,16 @@ export class FirebaseController {
   @UseGuards(AuthGuard('google'))
   async googleLogin() {}
 
-   @Get('login/google/callback')
-  @UseGuards(AuthGuard('google'))
-  async googleLoginCallback(@Req() req: Request) {
-    const user = req.user as any;
-    const accessToken = await this.generateAccessToken(user);
-    return { accessToken };
-  }
+  @Get('login/google/callback')
+@UseGuards(AuthGuard('google'))
+async googleLoginCallback(@Req() req: Request, @Res() res: Response) {
+  const user = req.user as any;
+  const accessToken = await this.generateAccessToken(user);
+  
+  // Redirect to the frontend homepage with the accessToken as a query parameter
+  const redirectUrl = `http://localhost:3000/homepage?accessToken=${accessToken}`;
+  res.redirect(redirectUrl); // Use res.redirect instead of res.redirected
+}
 
   private async generateAccessToken(user: any): Promise<string> {
     const payload = {
