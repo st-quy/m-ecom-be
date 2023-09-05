@@ -16,16 +16,14 @@ export class FirebaseController {
   @UseGuards(AuthGuard('google'))
   async googleLogin() {}
 
-  @Get('login/google/callback')
-@UseGuards(AuthGuard('google'))
-async googleLoginCallback(@Req() req: Request, @Res() res: Response) {
-  const user = req.user as any;
-  const accessToken = await this.generateAccessToken(user);
-  
-  // Redirect to the frontend homepage with the accessToken as a query parameter
-  const redirectUrl = `http://localhost:3000/homepage?accessToken=${accessToken}`;
-  res.redirect(redirectUrl); // Use res.redirect instead of res.redirected
-}
+   @Get('login/google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleLoginCallback(@Req() req: Request , @Res() res: Response) {
+    const user = req.user as any;
+    const accessToken = await this.generateAccessToken(user);
+    const redirectUrl = `https://m-comestic.netlify.app?accessToken=${accessToken}`;
+    res.redirect(redirectUrl); // Use res.redirect instead of res.redirected
+  }
 
   private async generateAccessToken(user: any): Promise<string> {
     const payload = {
