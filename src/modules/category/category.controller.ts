@@ -23,7 +23,7 @@ constructor(private readonly categoryService: CategoryService){}
     return this.categoryService.findOne(id);
   }
 
-  @UseGuards(new RoleGuard(['marketing']))
+  @UseGuards(new RoleGuard(['marketing','admin']))
   @UseGuards(AuthGuard)
   @Post()
   async create(@Body() addCategoryDTO: AddCategoryDTO) {
