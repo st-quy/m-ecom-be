@@ -21,13 +21,10 @@ export class CartsProducts {
   @ManyToOne(() => Carts, cart => cart.cartsProduct)
   @JoinColumn({ name: "cartId", referencedColumnName: 'id' })
   cart: Carts;
-
-
  
   @ManyToOne(() => Products, product => product.cartsProducts)
   @JoinColumn({ name: "productId", referencedColumnName: 'id' })
   product: Products;
-
   
 }
 

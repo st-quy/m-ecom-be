@@ -2,7 +2,7 @@ import { Controller, Get, Req, Res, UnauthorizedException, UseGuards } from '@ne
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
-import { Request ,Response} from 'express';
+import { Request , Response } from 'express';
 import * as admin from 'firebase-admin';
 
 @Controller()

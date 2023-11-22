@@ -17,7 +17,7 @@ export class CartsService {
         private readonly cartsProductRepository: Repository<CartsProducts>,
         @InjectRepository(Users)
         private readonly usersRepository: Repository<Users>,
-    ) { }
+    ) {}
 
     async getCartsByUserId(@Param('userId') userId: number): Promise<Carts[]> {
         const carts = await this.cartsRepository.createQueryBuilder('cart')
